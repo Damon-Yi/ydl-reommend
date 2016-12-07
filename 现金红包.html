@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta name="format-detection" content="telephone=no" />
+    <link href="css/public.css" rel="stylesheet" type="text/css">
+    <script src="js/public.js"></script>
+    <script type="text/javascript" src="plugin/iscroll/iscroll.js"></script>
+    <script type="text/javascript" src="plugin/zepto/zepto.js"></script>
+    <script type="text/javascript" src="plugin/zepto/touch.js"></script>
+    <script src="js/common.js"></script>
+    <style>
+        .red_paper{width: 100%;max-width:480px;min-width:320px;font-size: 0;position: relative;text-align: center;color: #666;    margin: 0 auto;}
+        .red_paper .re_bg{width: 100%;}
+        .red_paper .re_user{position: absolute;top: 0.64rem;width: 100%;left: 0;}
+        .red_paper .re_user .re_icon{width: 0.76rem;height: 0.76rem;border-radius: 100%;}
+        .red_paper .re_user .re_txt{font-size: 0.22rem;margin: 0.22rem auto;}
+        .red_paper .re_user .re_title{font-size: 0.42rem;color: #f35e50;font-weight: bold;}
+        .red_paper .re_btn{width:2.2rem;height: 2.2rem;background-color: #fec262;border-radius: 100%;    position: absolute;bottom: 0.8rem;left: 50%;margin-left: -1.1rem;overflow: hidden;}
+        .red_paper .re_btn.pressDown{}
+        .red_paper .re_btn:before{content: '';width: 1.92rem;height: 1.92rem;display: block;position: absolute;background-color: #feb739;border-radius: 100%;left: 50%;top: 50%;margin: -0.96rem 0 0 -0.96rem;z-index: 2;}
+        .red_paper .re_btn:after{content: '';width: 1.92rem;height: 1.92rem;display: block;position: absolute;background-color: #f09c30;border-radius: 100%;left: 50%;top: 50%;margin:-0.96rem 0 0 -0.96rem;z-index: 1;transition: all 0.3s ease;-webkit-transition: all 0.3s ease;box-shadow:0 0.04rem 0.04rem 0.04rem rgba(0, 0, 0, 0.3); }
+        .red_paper .re_btn.pressDown:after{box-shadow:0 0.02rem 0.02rem 0.02rem rgba(0, 0, 0, 0.3);}
+        .red_paper .re_btn .re_open{width: 0.74rem;display: block;position: absolute;height: 0.72rem;margin: -0.36rem 0 0 -0.37rem;left: 50%;top: 50%;z-index: 3;}
+        
+        .link_btn{width: 5.3rem;margin: 0.26rem auto 0.68rem;}
+        .a_3{color: #666;font-size: 0.18rem;display: block;margin: 0 auto;text-align: center;padding-bottom: 0.2rem;}
+        .a_3>span{display: inline-block;vertical-align: middle;}
+        .a_3>span:last-child{font-size: 0.26rem;margin-left: 1px;margin-top: -2px;}
+
+
+        .red_paper .re_btn .ripple {background: rgba(255, 255, 255, 0.4) none repeat scroll 0 0;border-radius: 50%;height: 0;opacity: 1;position: absolute;transform: scale(0);width: 0;z-index: 4}
+        .red_paper .re_btn.pressDown .rippleEffect {width: 3rem; height: 3rem; left:50%; top:50%;margin-left:-1.5rem;margin-top:-1.5rem;animation: 0.4s linear 0s normal none 1 running rippleDrop;}
+        @keyframes rippleDrop {
+            100% {opacity: 0;transform: scale(1);}
+        }
+        @keyframes rippleDrop {
+        100% {opacity: 0;transform: scale(1);}
+        }
+        /*二维码*/
+        .concern_panel{font-size: 0.26rem;color: #333;width:4.6rem;margin: 0 auto;display: none;background-color:#fff;position: relative;text-align: left;border-radius: 2px;}
+        .concern_panel .close_btn{width: 0.44rem;height: 0.44rem;background: url(../images/close-btn0.png) no-repeat center center;position: absolute;top: 0.26rem;right: 0.26rem;background-size: 80%;}
+        .concern_panel .concern_cont{text-align: center;padding-top:0.84rem;padding-bottom:0.6rem;}
+        .concern_panel .c_qcode{width: 2.8rem;height: 2.8rem;}
+        .concern_panel .c_p_1{}
+        .concern_panel_0{}
+        .concern_panel_1{}
+        .concern_panel_1 .c_title{padding-top: 0.64rem;padding-bottom: 0.4rem;background-color: #f0eff5;text-align: center;font-size: 0.3rem;}
+        .concern_panel_1 .concern_cont{padding-top:0.34rem;}
+        .concern_panel_2{}
+        .concern_panel_2 .c_title{padding-top: 0.64rem;padding-bottom: 0.4rem;background-color: #f0eff5;text-align: center;font-size: 0.24rem;}
+        .concern_panel_2 .concern_cont{padding-top:0.34rem;background-color: #fff3cb;}
+        .concern_panel_2 .c_title .c_p_2{font-size: 0.3rem;color: #f83e3f;margin-bottom:0.22rem;}
+        .concern_panel_2 .c_title .c_p_3{}
+        /*注册*/
+        .reg_panel{font-size: 0.26rem;color: #333;width:5.3rem;margin: 0 auto;display: none;background-color:#fff;position: relative;text-align: left;border-radius: 2px;}
+        .reg_panel .c_title{text-align: center;font-size: 0.36rem;background-color: #fff3cb;padding-top: 0.2rem;padding-bottom: 0.4rem;}
+        .reg_panel .c_title .c_img_0{width: 4.1rem;display: block;margin: 0 auto;}
+        .reg_panel .c_title .c_p_4{color: #f83e3f;}
+        .reg_panel .reg_cont{width: 4.06rem;margin: 0 auto;padding-top: 0.4rem;padding-bottom: 0.6rem;}
+        .reg_panel .close_btn{width: 0.44rem;height: 0.44rem;background: url(../images/close-btn0.png) no-repeat center center;position: absolute;top: 0.26rem;right: 0.26rem;background-size: 80%;}
+        .reg_panel .reg_cont .input_wrap{position: relative;height: 0.8rem;line-height: 0.8rem;}
+        .reg_panel .reg_cont .input_wrap:after{content:'';position:absolute;background-color: #ddd;height: 1px;width: 100%;transform:scaleY(0.5);-webkit-transform:scaleY(0.5);bottom: 0;left: 0;}
+        .reg_panel .reg_cont .input_wrap>input[type="text"],.reg_panel .reg_cont .input_wrap>input[type="tel"]{width:100%;height:0.4rem;line-height:0.4rem;border:none;font-size: 0.26rem;}
+        .reg_panel .reg_cont .r_btn{width:100%;height:0.82rem;line-height:0.82rem;background-color:#4285f4;font-size: 0.3rem;margin-top: 0.3rem;color: #fff;text-align: center;border-radius: 2px;}
+        .reg_panel .reg_cont .r_btn.active{background-color: #206ae6;}
+        .reg_panel .reg_cont .r_protocal{text-align: left;margin-top: 10px;color: #999;font-size:0.18rem;}
+        .reg_panel .reg_cont .r_protocal>a{color: #186edb;}
+        .reg_panel .reg_cont .get_valid_code{width: 1.2rem;border: 1px solid #186edb;color: #186edb !important;background-color: #fff;text-align: center;font-size: 0.18rem;height: 0.42rem;position: absolute;right: 0.18rem;top: 0.18rem;border-radius: 2px;}
+        /*已注册*/
+        .reg_panel .c_title .c_img_1{width:1.58rem;display: block;margin: 0 auto 0.2rem;}
+        .reg_panel_1 .reg_cont{padding-top: 0;}
+        .reg_panel_1 .c_title .c_p_5{color: #666;font-size: 0.3rem;}
+        .reg_panel_1 .c_title .c_p_6{color: #333;font-size: 0.26rem;margin: 0.08rem auto;}
+        .reg_panel_1 .c_title .c_p_7{color: #333;font-size: 0.3rem;}
+        .reg_panel_1 .c_title .c_p_7>span{color: #f66351;}
+        /*活动规则*/
+        .active_rule{font-size: 0.26rem;color: #333;width:92%;margin: 0 auto;display: none;background-color:#fff;position: relative;height:6rem;text-align: left;border-radius: 2px;}
+        .active_rule>div{position: absolute;z-index: 1;top: 0;bottom:0;left: 0;width: 100%;overflow: hidden;}
+        .active_rule>div>div{position: absolute;z-index: 1;-webkit-tap-highlight-color: rgba(0,0,0,0);width: 100%;-webkit-transform: translateZ(0);-moz-transform: translateZ(0);-ms-transform: translateZ(0);-o-transform: translateZ(0);transform: translateZ(0);-webkit-touch-callout: none;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;-webkit-text-size-adjust: none;-moz-text-size-adjust: none;-ms-text-size-adjust: none;-o-text-size-adjust: none;text-size-adjust: none;}
+        .active_rule .active_rule_cont{padding: 0 0.56rem 0.2rem;}
+        .active_rule .a_p_1{font-size: 0.4rem;text-align: center;padding: 0.4rem 0 0.34rem;font-weight: bold;}
+        .active_rule .a_p_2{margin:0 auto 0.12rem;word-break: break-all;}
+        .active_rule .close_btn{width: 0.44rem;height: 0.44rem;background: url(../images/close-btn0.png) no-repeat center center;position: absolute;top: 0.26rem;right: 0.26rem;background-size: 80%;}
+        /*注册协议*/
+        .reg_rule{font-size: 0.26rem;color: #333;width:92%;margin: 0 auto;display: none;background-color:#fff;position: relative;height:8.6rem;text-align: left;border-radius: 2px;}
+        .reg_rule>div{position: absolute;z-index: 1;top: 0;bottom:0;left: 0;width: 100%;overflow: hidden;}
+        .reg_rule>div>div{position: absolute;z-index: 1;-webkit-tap-highlight-color: rgba(0,0,0,0);width: 100%;-webkit-transform: translateZ(0);-moz-transform: translateZ(0);-ms-transform: translateZ(0);-o-transform: translateZ(0);transform: translateZ(0);-webkit-touch-callout: none;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;-webkit-text-size-adjust: none;-moz-text-size-adjust: none;-ms-text-size-adjust: none;-o-text-size-adjust: none;text-size-adjust: none;}
+        .reg_rule .reg_rule_cont{padding: 0 0.56rem 0.2rem;}
+        .reg_rule .reg_title{font-size: 0.4rem;text-align: center;padding: 0.4rem 0 0.2rem;font-weight: bold;}
+        .reg_rule .reg_txt{word-break: break-all;padding: 0 0.1rem 0.2rem 0.2rem;}
+        .reg_rule .reg_txt .reg_p1{color: #414141;margin:0.14rem 0;}
+        .reg_rule .reg_txt .reg_p2{color: #6f6f6f;text-indent: 25px;}
+        .reg_rule .reg_txt .reg_p3{color: #6f6f6f;text-align: right;}
+        .reg_rule .close_btn{width: 0.44rem;height: 0.44rem;background: url(../images/close-btn0.png) no-repeat center center;position: absolute;top: 0.26rem;right: 0.26rem;background-size: 80%;}
+    </style>
+    <script type="text/javascript">
+        var aScroll;
+        function loaded () {
+            aScroll = new IScroll('#body_wrapper',{
+                scrollbars: true,
+                mouseWheel: true,
+                interactiveScrollbars: true,
+                shrinkScrollbars: 'scale',
+                fadeScrollbars: true,click: true 
+            });
+        }
+        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+    </script>
+</head>
+<body onload="loaded()">
+    <article id="body_wrapper">
+        <div>
+            <div class="red_paper">
+                <img class="re_bg" src="images/re-3.png" alt="">
+                <div class="re_user">
+                    <img class="re_icon" src="images/re-5.png" alt="">
+                    <p class="re_txt">昵称</p>
+                    <p class="re_title">赠送给你一个大礼包</p>
+                </div>
+                <div class="re_btn">
+                    <div class="re_img_wrap">
+                        <img class="re_open" src="images/re-4.png" alt="">
+                        <!-- <span class="ripple rippleEffect" style=""></span> -->
+                    </div>
+                </div>
+            </div>
+            <a href="javascript:;" class="link_btn concern">关注我们</a>
+            <a href="javascript:;" class="a_3 active_rule_btn"><span>活动规则</span><span>></span></a>
+        </div>
+    </article>
+    <!--关注我们-->
+    <div class="concern_panel concern_panel_0">
+        <div class="concern_cont">
+            <img  class="c_qcode" src="images/qcode.png" alt="">
+            <p class="c_p_1">长按二维码，关注我们</p>
+            <p class="c_p_1">参与更多活动</p>
+        </div>
+        <div class="close_btn"></div>
+    </div>
+    <!--活动结束-->
+    <div class="concern_panel concern_panel_1">
+        <div class="c_title">
+            <p>活动结束</p>
+        </div>
+        <div class="concern_cont">
+            <img  class="c_qcode" src="images/qcode.png" alt="">
+            <p class="c_p_1">长按二维码，关注我们</p>
+            <p class="c_p_1">参与更多活动</p>
+        </div>
+        <div class="close_btn"></div>
+    </div>
+    <!--注册成功-->
+    <div class="concern_panel concern_panel_2">
+        <div class="c_title">
+            <p class="c_p_2">注册成功</p>
+            <p class="c_p_3">1000元现金红包已发送给您个人账户</p>
+        </div>
+        <div class="concern_cont">
+            <img  class="c_qcode" src="images/qcode.png" alt="">
+            <p class="c_p_1">长按二维码，关注我们</p>
+            <p class="c_p_1">进入个人中心-我的奖品查看</p>
+        </div>
+        <div class="close_btn"></div>
+    </div>
+    <!--注册-->
+    <div class="reg_panel reg_panel_0">
+        <div class="c_title">
+            <img  class="c_img_0" src="images/re-1.png" alt="">
+            <p class="c_p_4">获得1000元现金红包</p>
+        </div>
+        <form class="reg_cont" action="#">
+            <div class="input_wrap"><input class="phone" type="tel" placeholder="手机号码" pat='/^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/'></div>
+            <div class="input_wrap"><input class="valid_code" type="text" placeholder="验证码"><input class="get_valid_code" type="button" value="获取验证码"></div>
+            <p class="r_protocal">注册即视为同意<a href="javascript:;">《员动力注册协议》</a></p>
+            <div class="r_btn com_btn_1">马上注册</div>  
+        </form>
+        <div class="close_btn"></div>
+    </div>
+    <!--已注册-->
+    <div class="reg_panel reg_panel_1">
+        <div class="c_title">
+            <img  class="c_img_1" src="images/re-2.png" alt="">
+            <p class="c_p_5">仅限新注册用户参与</p>
+            <p class="c_p_6">推荐朋友注册，当TA成功借款时</p>
+            <p class="c_p_7">您获得<span>50元现金</span>奖励</p>
+        </div>
+        <form class="reg_cont" action="#">
+            <div class="r_btn">推荐好友</div>  
+        </form>
+        <div class="close_btn"></div>
+    </div>
+    <!--活动规则-->
+    <div class="active_rule">
+        <div>
+            <div>
+                <div class="active_rule_cont">
+                    <p class="a_p_1">奖励规则</p>
+                    <p class="a_p_2">1、每位新注册的用户只能领取一次现金红包，红包有效期为N天；</p>
+                    <p class="a_p_2">2、领取的现金红包仅可用于抵扣贷款利息，不可提现，最多可抵扣三期利息（后三期），余额自动清零；</p>
+                    <p class="a_p_2">3、关注“员动力”微信公众号，在个人中心-我的奖品中查看已领取的现金红包；</p>
+                    <p class="a_p_2">4、本活动最终解释权归深圳市员动力科技有限公司所有。</p>
+                </div>
+            </div>
+            <div class="close_btn"></div>
+        </div>
+    </div>
+    <!--注册协议-->
+    <div class="reg_rule">
+        <div>
+            <div>
+                <div class="active_rule_cont">
+                    <div class="reg_title">员动力服务协议</div>
+                    <div class="reg_txt">
+                        <p class="reg_p1">在您注册成为本网站的会员之前，请您认真阅读本会员注册协议。您必须完全同意以下所有条款，方能成为本网站的会员。作为本网站用户，您必须是中国大陆公民，年龄在18周岁以上，且具有完全的民事权利能力及民事行为能力。如不具备上述资格，您应立即停止在本网站的注册程序、停止使用本网站服务，本网站亦有权随时终止您的注册进程及本网站服务，您应对您的注册给本网站带来的损失承担全额赔偿责任。</p>
+                        <p class="reg_p1">一、会员条款的确认和接受</p>
+                        <p class="reg_p2">本协议是注册会员与员动力公司及其关联企业之间的法律协议。</p>
+                        <p class="reg_p2">关联企业”系指现在或将来与员动力公司构成“一方控制、共同控制另一方或对另一方施加重大影响，以及两方或两方以上同受一方控制、共同控制或重大影响”的关系的企业，下文直称为“员动力”。</p>
+                        <p class="reg_p2">注册会员”是指愿意接受或实际上已经接受员动力提供的产品和服务的个人。</p>
+                        <p class="reg_p2">此份协议是注册会员接受员动力产品和服务时适用的通用条款。因此，在注册成为员动力会员的注册会员前或接受员动力的产品和服务之前，确认已经详细地阅读了本注册会员协议的所有内容。</p>
+                        <p class="reg_p2">注册会员了解并同意：只要注册会员点击“同意”按钮并完成注册，注册会员就已接受了本注册会员协议及员动力公布的各项服务规则（包括填写实名的联系方式等等），并愿意受其约束。如果发生纠纷，注册会员不得以未仔细阅读为由进行抗辩。</p>
+                        <p class="reg_p2">注册会员了解并同意：随着市场经营情况的变化，员动力有权随时更改本注册会员协议及相关服务规则。修改本注册会员协议时，员动力将于相关页面公告修改的事实，有权不对注册会员进行个别通知。注册会员应该在每次登录购买产品和服务前查询员动力官方网站的相关公告，以了解本注册会员协议及其他服务规则的变化。若注册会员不同意本注册会员协议或相关服务规则，或者不同意员动力作出的修改，注册会员可以主动停止使用员动力提供的产品和服务，如果在员动力修改协议或服务规则后，注册会员仍继续使用员动力提供的产品和服务，即表示注册会员同意员动力对本注册会员协议及相关服务规则所做的所有修改。由于注册会员在注册会员协议变更后因未熟悉公告规定而引起的损失，员动力将不会承担任何责任。</p>
+                        <p class="reg_p2">员动力（以下简称本站）的各项电子服务的所有权和运作权归本站。本站提供的服务将完全按照其发布的服务条款和操作规则严格执行。注册会员必须完全同意所有服务条款并完成注册程序，才能成为本站的注册会员。注册会员确认：本协议条款是处理双方权利义务的当然约定依据，除非违反国家强制性法律，否则始终有效。在下订单的同时，您也同时承认了您拥有购买这些产品的权利能力和行为能力，并且将您对您在订单中提供的所有信息的真实性负责。</p>
+                        <p class="reg_p1">二、服务及隐私保护</p>
+                        <p class="reg_p2">本站运用自己的操作系统通过国际互联网络为注册会员提供网络服务。同时，注册会员必须：</p>
+                        <p class="reg_p2">1.自行配备上网的所需设备，包括个人电脑、调制解调器或其他必备上网装置。</p>
+                        <p class="reg_p2">2.自行负担个人上网所支付的与此服务有关的电话费用、网络费用。</p>
+                        <p class="reg_p2">3.提供详尽、准确的个人资料。</p>
+                        <p class="reg_p2">4.不断更新注册资料，符合及时、详尽、准确的要求。</p>
+                        <p class="reg_p2">5.本站对注册会员的电子邮件、手机号等隐私资料进行保护，承诺不会在未获得注册会员许可的情况下擅自将注册会员的个人资料信息出租或出售给任何第三方，但以下情况除外：</p>
+                        <p class="reg_p2">5.1注册会员同意让第三方共享资料。</p>
+                        <p class="reg_p2">5.2注册会员同意公开其个人资料，享受为其提供的产品和服务。</p>
+                        <p class="reg_p2">5.3本站需要听从法庭传票、法律命令或遵循法律程序。</p>
+                        <p class="reg_p2">5.4本站发现注册会员违反了本站服务条款或本站其它使用规定。</p>
+                        <p class="reg_p2">如果注册会员提供的资料包含有不正确的信息，本站保留立即停止向该注册会员使用网络服务资格的权利。</p>
+                        <p class="reg_p1">三、注册会员的帐户信息保护及披露</p>
+                        <p class="reg_p2">注册会员一旦注册成功，成为本站的合法的注册会员。您可随时根据需要改变您的密码。注册会员将对注册会员名和密码安全负全部责任。另外，每个注册会员都要对以其注册会员名进行的所有活动和事件负全责。注册会员若发现任何非法使用注册会员帐户或存在安全漏洞的情况，请立即通告本站。</p>
+                        <p class="reg_p2">注册会员同意本网站在业务运营中收集和储存会员的用户信息，包括但不限于会员自行提供的资料和信息，以及本网站自行收集、取得的会员在本网站的交易记录和使用信息等。本网站收集和储存的用户信息的主要目的在于提高为会员提供服务的效率和质量。</p>
+                        <p class="reg_p2">注册会员同意本网站在业务运营中使用会员的用户信息，包括但不限于：</p>
+                        <p class="reg_p2">(1) 向本网站的合作机构（该合作机构仅限于本网站为了完成拟向您提供的服务而合作的机构）提供会员的用户信息；</p>
+                        <p class="reg_p2">(2) 由人工或自动程序对会员用户信息进行评估、 分类、研究；</p>
+                        <p class="reg_p2">(3) 使用会员的用户信息以改进本网站的推广；</p>
+                        <p class="reg_p2">(4) 使用会员提供的联系方式与会员联络并向其推送有关业务和管理方面的信息。</p>
+                        <p class="reg_p2">本网站可能通过审查会员的资料以区分或鉴定使用多个用户名或别名的会员，以识别问题或解决有关争议。</p>
+                        <p class="reg_p1">四、拒绝提供担保及免责声明</p>
+                        <p class="reg_p2">注册会员个人对网络服务的使用承担风险。本站对此不作任何类型的担保，不论是明确的或隐含的，但是不对商业性的隐含担保、特定目的和不违反规定的适当担保作限制。本站不担保服务一定能满足注册会员的要求，也不担保服务不会受中断，对服务的及时性，安全性，出错发生都不作担保。本站对在本站上得到的任何商品、服务或交易进程，不作担保。</p>
+                        <p class="reg_p1">五、会员管理</p>
+                        <p class="reg_p2">注册会员单独承担发布内容的责任。会员对服务的使用是根据所有适用于服务的地方法律、国家法律和国际法律标准的。注册会员承诺：&nbsp;</p>
+                        <p class="reg_p2">1．在本网站的网页上发布信息或者利用本网站的服务时必须符合中国有关法规，不得在本网站的网页上或者利用本网站的服务制作、复制、发布、传播以下信息：&nbsp;</p>
+                        <p class="reg_p2">（1）反对宪法所确定的基本原则的。&nbsp;</p>
+                        <p class="reg_p2">（2）危害国家安全，泄露国家秘密，颠覆国家政权，破坏国家统一的。</p>
+                        <p class="reg_p2">（3）损害国家荣誉和利益的。</p>
+                        <p class="reg_p2">（4）煽动民族仇恨、民族歧视，破坏民族团结的。</p>
+                        <p class="reg_p2">（5）破坏国家宗教政策，宣扬邪教和封建迷信的。&nbsp;</p>
+                        <p class="reg_p2">（6）散布谣言，扰乱社会秩序，破坏社会稳定的。</p>
+                        <p class="reg_p2">（7）散布淫秽、色情、赌博、暴力、凶杀、恐怖内容或者教唆犯罪的。&nbsp;</p>
+                        <p class="reg_p2">（8）侮辱或者诽谤他人，侵害他人合法权益的。</p>
+                        <p class="reg_p2">（9）含有法律、行政法规禁止的其他内容的。</p>
+                        <p class="reg_p2">2．在本网站的网页上发布信息或者利用本网站的服务时，还必须符合其他有关国家和地区的法律规定以及国际法的有关规定。&nbsp;</p>
+                        <p class="reg_p2">3．不利用本网站的服务从事以下活动：</p>
+                        <p class="reg_p2">（1）未经允许，进入计算机信息网络或者使用计算机信息网络资源的。</p>
+                        <p class="reg_p2">（2）未经允许，对计算机信息网络功能进行删除、修改或者增加的。&nbsp;</p>
+                        <p class="reg_p2">（3）未经允许，对进入计算机信息网络中存储、处理或者传输的数据和应用程序进行删除、修改或者增加的。&nbsp;</p>
+                        <p class="reg_p2">（4）故意制作、传播计算机病毒等破坏性程序的。</p>
+                        <p class="reg_p2">（5）其他危害计算机信息网络安全的行为。</p>
+                        <p class="reg_p2">4．不以任何方式干扰本网站的服务。</p>
+                        <p class="reg_p2">5．遵守本网站的其他规定和程序。&nbsp;</p>
+                        <p class="reg_p2">注册会员须对自己在使用本网站服务过程中的行为承担法律责任，承担法律责任的形式包括但不限于：对受到侵害者进行赔偿，在本网站首先承担了因会员行为导致的行政处罚或侵权损害赔偿责任后，会员应给予本网站等额赔偿。会员理解，如果本网站发现其网站传输的信息明显属于第九条第一款所列内容之一，依据中国法律，本网站有义务立即停止传输，保存有关记录，向国家有关机关报告，并且删除含有该内容的地址、目录或关闭服务器。&nbsp;</p>
+                        <p class="reg_p2">会员使用本网站论坛服务进行信息发布条件的行为，也须遵守本条的规定。&nbsp;</p>
+                        <p class="reg_p2">若会员的行为不符合以上提到的服务条款，本网站将作出独立判断立即取消其服务账号。</p>
+                        <p class="reg_p1">六、有限责任</p>
+                        <p class="reg_p2">本站对任何直接、间接、偶然、特殊及继起的损害不负责任，这些损害可能来自：不正当使用网络服务，在网上购买商品或进行同类型服务，在网上进行交易，非法使用网络服务或注册会员传送的信息有所变动。这些行为都有可能会导致本站的形象受损，所以本站事先提出这种损害的可能性。</p>
+                        <p class="reg_p1">七、通告</p>
+                        <p class="reg_p2">所有发给注册会员的通告都可通过重要页面的公告或电子邮件或常规的信件传送。本站的活动信息也将定期通过页面公告及电 子邮件方式向注册会员发送。注册会员协议条款的修改、服务变更、或其它重要事件的通告会以电子邮箱或者短信进行通知。</p>
+                        <p class="reg_p1">八、责任限制</p>
+                        <p class="reg_p2">如因不可抗力或其他本站无法控制的原因使本站销售系统崩溃或无法正常使用导致网上交易无法完成或丢失有关的信息、记录等，本站不承担责任。但是本站会尽可能合理地协助处理善后事宜，并努力使客户免受经济损失。</p>
+                        <p class="reg_p2">除了本站的使用条件中规定的其它限制和除外情况之外，在中国法律法规所允许的限度内，对于因交易而引起的或与之有关的任何直接的、间接的、特殊的、附带的、后果性的或惩罚性的损害，或任何其它性质的损害，本站、本站的董事、管理人员、雇员、代理或其它代表在任何情况下都不承担责任。本站的全部责任，不论是合同、保证、侵权（包括过失）项下的还是其它的责任，均不超过您所购买的与该索赔有关的商品或服务价值额。</p>
+                        <p class="reg_p1">九、法律管辖和适用</p>
+                        <p class="reg_p2">本协议的订立、执行和解释及争议的解决均应适用中国法律。</p>
+                        <p class="reg_p2">如发生本站服务条款与中国法律相抵触时，则这些条款将完全按法律规定重新解释，而其它合法条款则依旧保持对注册会员产生法律效力和影响。</p>
+                        <p class="reg_p2">本协议的规定是可分割的，如本协议任何规定被裁定为无效或不可执行，该规定可被删除而其余条款应予以执行。</p>
+                        <p class="reg_p2">如双方就本协议内容或其执行发生任何争议，双方应尽力友好协商解决；协商不成时，任何一方均可向深圳市福田区人民法院提起诉讼。</p>
+                        <p class="reg_p1">十、其他规定</p>
+                        <p class="reg_p2">如本用户协议中的任何内容无论因何种原因完全或部分无效或不具有执行力，本用户协议的其余内容仍应有效并且对协议各方有约束力。</p>
+                        <p class="reg_p2">本用户协议中的标题仅为方便而设，不具法律或契约效果。</p>
+                        <p class="reg_p2">本协议条款的最终解释权归员动力公司所有。</p>
+                        <p class="reg_p3"> 2016年6月1日。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="close_btn"></div>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            /*loading效果*/
+            var loader = new loading();
+            /*"拆"*/
+            $('.red_paper .re_btn').on('tap',function(e){
+                var _that = this;
+                $(this).addClass('pressDown');
+                setTimeout(function(){
+                    $(_that).removeClass('pressDown');
+                },300);
+                /*注册*/
+                var regLayer = new myLayer({
+                    'layerCont':'.reg_panel_0',
+                    'hasShadowBg':true,
+                    'shadowClose':true,
+                    'funcs':{
+                        '.close_btn':function(){
+                            regLayer.destory();
+                        },
+                        '.r_protocal>a':function(){//注册协议
+                            var regRuleLayer = new myLayer({
+                                'layerCont':'.reg_rule',
+                                'hasShadowBg':true,
+                                'shadowClose':true,
+                                'funcs':{
+                                    '.close_btn':function(){
+                                        regRuleLayer.destory();
+                                    }
+                                }
+                            });
+                            var regRuleScroll = new IScroll('.layer_container .reg_rule>div',{
+                                scrollbars: true,
+                                mouseWheel: true,
+                                interactiveScrollbars: true,
+                                shrinkScrollbars: 'scale',
+                                fadeScrollbars: true,click: true 
+                            });
+                            regRuleScroll.refresh();
+                        },
+                        '.get_valid_code':function(){//获取验证码
+                            /*手机号*/
+                            var $phone = regLayer.layerContainer.find('.phone'),
+                            phonePattern = eval($phone.attr('pat'));
+                            if($phone.val()==''){
+                                tips('请填写手机号','tips_center',1500);
+                                return false;
+                            }else if(!phonePattern.test($phone.val())){
+                                tips('手机号格式不对','tips_center',1500);
+                                return false;
+                            }else{
+                                var getCodeObj = getCode('.layer_container .get_valid_code',10,function(){
+                                    console.log('send ...');
+                                });
+                            }
+                        },
+                        '.com_btn_1':function(){//表单提交
+
+                            var $this = regLayer.layerContainer.find('.com_btn_1');
+                            $this.addClass('active');
+                            setTimeout(function(){
+                                $this.removeClass('active');
+                            },300);
+
+                            var $phone = regLayer.layerContainer.find('.phone'),
+                            phonePattern = eval($phone.attr('pat')),
+                            $code = regLayer.layerContainer.find('.valid_code');
+                            /*手机号*/
+                            if($phone.val()==''){
+                                tips('请填写手机号','tips_center',1500);
+                                return false;
+                            }else if(!phonePattern.test($phone.val())){
+                                tips('手机号格式不对','tips_center',1500);
+                                return false;
+                            }
+                            /*验证码*/
+                            if($code.val()==''){
+                                tips('请填写验证码','tips_center',1500);
+                                return false;
+                            }else{
+                                /*提交*/
+                                loader.show();
+                                setTimeout(function(){
+                                    loader.hide();
+                                },3000);
+                                console.log('register..');
+                            }
+                        }
+                    }
+                });
+                /*已注册*/
+                // var regedLayer = new myLayer({
+                //     'layerCont':'.reg_panel_1',
+                //     'hasShadowBg':true,
+                //     'shadowClose':true,
+                //     'funcs':{
+                //         '.close_btn':function(){
+                //             regedLayer.destory();
+                //         }
+                //     }
+                // });
+            });
+            /*关注我们*/
+            $('.concern').on('tap',function(){
+                /*关注我们*/
+                // var qcodeLayer = new myLayer({
+                //     'layerCont':'.concern_panel_0',
+                //     'hasShadowBg':true,
+                //     'shadowClose':true,
+                //     'funcs':{
+                //         '.close_btn':function(){
+                //             qcodeLayer.destory();
+                //         }
+                //     }
+                // });
+                /*活动结束*/
+                // var activeEndLayer = new myLayer({
+                //     'layerCont':'.concern_panel_1',
+                //     'hasShadowBg':true,
+                //     'shadowClose':true,
+                //     'funcs':{
+                //         '.close_btn':function(){
+                //             activeEndLayer.destory();
+                //         }
+                //     }
+                // });
+                /*注册成功*/
+                var regSucLayer = new myLayer({
+                    'layerCont':'.concern_panel_2',
+                    'hasShadowBg':true,
+                    'shadowClose':true,
+                    'funcs':{
+                        '.close_btn':function(){
+                            regSucLayer.destory();
+                        }
+                    }
+                });
+            });
+            /*活动规则*/
+            $('.active_rule_btn').on('tap',function(){
+                var rateLayer = new myLayer({
+                    'layerCont':'.active_rule',
+                    'hasShadowBg':true,
+                    'shadowClose':true,
+                    'funcs':{
+                        '.close_btn':function(){
+                            rateLayer.destory();
+                        }
+                    }
+                });
+                var ruleScroll = new IScroll('.layer_container .active_rule>div',{
+                    scrollbars: true,
+                    mouseWheel: true,
+                    interactiveScrollbars: true,
+                    shrinkScrollbars: 'scale',
+                    fadeScrollbars: true,click: true 
+                });
+                ruleScroll.refresh();
+            });
+        });
+    </script>
+</body>
+</html>
